@@ -1,4 +1,4 @@
-# note-taking-api-project-group-4
+# Note-Taking-API-Project-Group-4
 
 A note taking API built with Node.js and Express
 
