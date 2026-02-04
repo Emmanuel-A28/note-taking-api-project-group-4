@@ -1,5 +1,11 @@
+required("dotenv").config();
+
 const express = require('express');
+const path = require("path");
+
 const app = express();
+const port = process.env.PORT;
+
 app.use(express.json());
 
 //creating an array to store notes
@@ -61,8 +67,8 @@ app.get('/notes/:id', (req, res) => {
     });
 });
 //starting the server
-const port = 3000;
+
 app.listen(port, () => {
-    console.log(`Server is running on port${port}`);
+    console.log(`Server is running on port ${port}`);
 });
 
