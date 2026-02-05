@@ -1,5 +1,5 @@
-required("dotenv").config();
-
+require("dotenv").config();
+//create and read routes  - Audrey
 const express = require('express');
 const path = require("path");
 
@@ -41,34 +41,48 @@ app.get('/notes/:id', (req, res) => {
     }
     res.status(200).json(note);
 });
-//update existing note
+
+
+// update existing note
 app.patch('/notes/:id', (req, res) => {
     const noteId = parseInt(req.params.id);
     const updates = req.body;
-    const note = note.find(n => n.id === noteId);
+
+    const note = notes.find(n => n.id === noteId);
+
     if (!note) {
-        return res.status(404).json({error: "Note not found" });
+        return res.status(404).json({ error: "Note not found" });
     }
+
     Object.assign(note, updates);
-    res.json({message: "Note patched successfully!", note
+
+    res.status(200).json({
+        message: "Note patched successfully!",
+        note
     });
 });
+
 //delete existing note
-app.get('/notes/:id', (req, res) => {
+app.delete('/notes/:id', (req, res) => {
     const noteId = parseInt(req.params.id);
+
     const noteExists = notes.some(n => n.id === noteId);
+
     if (!noteExists) {
-        return res.status(404).json({ error: "Note not found. Nothing to delete." });
+        return res.status(404).json({ error: "Note not found." });
     }
+
     notes = notes.filter(n => n.id !== noteId);
+
     res.status(200).json({
         message: `Note ${noteId} has been deleted.`,
         remainingNotes: notes
     });
 });
-//starting the server
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+//starting the server
+const PORT =  3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
 

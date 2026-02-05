@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Emmanuel-A28/note-taking-api-project-group-4#readme",
   "dependencies": {
+    "dotenv": "^17.2.3",
     "express": "^5.2.1"
   }
 }
