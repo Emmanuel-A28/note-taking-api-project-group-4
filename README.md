@@ -1,11 +1,13 @@
 # Note-Taking-API-Project-Group-4
 
-A note taking API built with Node.js and Express
+A simple RESTful note taking API for creating, reading, updating and deleting notes. 
+Built with **Node.js** and **Express.js**
 
 ## Tech Stack
 - Node.js
 - Express.js
-- dotenv
+- JavaScript
+- Postman (for API testing)
 
 ## Installation
 1. Install dependencies
