@@ -1,9 +1,18 @@
+require('dotenv').config();
+let notes = [
+    {id: 1, title: "Welcome to Notes", content: "This is your first note. Lets do something fun with notes!"}];
+
+const { error } = require('console');
 const express = require('express');
+const path = require("path");
+
 const app = express();
+const port = process.env.PORT;
+
 app.use(express.json());
 
 //creating an array to store notes
-let notes = [];
+
 console.log(notes)
 let currentId = 1;
 app.post('/notes', (req, res) => {
@@ -14,7 +23,7 @@ app.post('/notes', (req, res) => {
         return res.status(400).json({ error: 'Title and content are required.' });
     }
     // create new note
-    const newNote = { id: currentId++, title, content };
+    const newNote = { id: notes.length + 1, title, content };
     notes.push(newNote);
     res.status(201).json({
         message: 'Note created successfully.',
@@ -27,7 +36,7 @@ app.get('/notes', (req, res) => {
     res.status(200).json(notes);
 });
 //read single note
-app.get('/notes/:id', (req, res) => {
+app.get('/notes/:id', validateId, (req, res) => {
     const noteId = parseInt(req.params.id);
     const note = notes.find(n => n.id === noteId);
     if (!note) {
@@ -36,10 +45,10 @@ app.get('/notes/:id', (req, res) => {
     res.status(200).json(note);
 });
 //update existing note
-app.patch('/notes/:id', (req, res) => {
-    const noteId = parseInt(req.params.id);
+app.patch('/notes/:id', validateId, (req, res) => {
+    const id = parseInt(req.params.id);
     const updates = req.body;
-    const note = note.find(n => n.id === noteId);
+    const note = notes.find(n => n.id === id);
     if (!note) {
         return res.status(404).json({error: "Note not found" });
     }
@@ -48,7 +57,7 @@ app.patch('/notes/:id', (req, res) => {
     });
 });
 //delete existing note
-app.get('/notes/:id', (req, res) => {
+app.delete('/notes/:id', validateId, (req, res) => {
     const noteId = parseInt(req.params.id);
     const noteExists = notes.some(n => n.id === noteId);
     if (!noteExists) {
@@ -60,9 +69,23 @@ app.get('/notes/:id', (req, res) => {
         remainingNotes: notes
     });
 });
-//starting the server
-const port = 3000;
-app.listen(port, () => {
-    console.log(`Server is running on port${port}`);
+//Error Handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({error: "Something went wrong!" });
 });
+//starting the server
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
+
+//middleware to validate note ID
+function validateId(req, res, next) {
+    const noteId = parseInt(req.params.id);
+    if (isNaN(noteId) || noteId <= 0) {
+        return res.status(400).json({ error: 'Invalid note ID.' });
+    }
+    next();
+};
 
