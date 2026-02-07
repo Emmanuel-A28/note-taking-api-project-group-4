@@ -62,5 +62,14 @@
     "content": "Idea session",
     "type": "note",
     "date": "2026-02-05T18:36:51.872Z"
+  },
+  {
+    "id": 1770437781526,
+    "title": "Buy Groceries",
+    "content": "Milk, Eggs, and Bread",
+    "type": "todo",
+    "date": "2026-02-07T04:16:21.526Z",
+    "updatedAt": "2026-02-07T04:16:21.528Z",
+    "completed": false
   }
 ]
