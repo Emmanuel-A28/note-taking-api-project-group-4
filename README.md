@@ -1,9 +1,45 @@
- Note-Taking & Task Management APIA robust, persistent RESTful API built with Node.js and Express. This application features a dual-purpose system for managing general Notes and a scheduled To-Do List, complete with data persistence using the local file system.📋 Key FeaturesFull CRUD: Create, Read, Update, and Delete entries.Data Persistence: Uses the fs (File System) module to save data to data.json.Smart Search: Filter by title (case-insensitive) or entry type.Task Scheduling: Specific logic for to-do items, including completion toggling.Analytics Dashboard: Real-time stats on your productivity.🛠️ Installation & SetupClone the repository:Bashgit clone <your-repo-link>
-cd note-taking-api
-Install dependencies:npm install
+# Note-Taking-API-Project-Group-4
 
-Configure Environment:Create a .env file in the root directory:
-Code snippet PORT=3000
-Initialize Data Storage:Ensure data.json exists in the root and contains an empty array:JSON[]
-Start the Server:Bashnpm run dev
-📡 API Endpoints Reference1. General CollectionMethodEndpointQuery ParamsDescriptionGET/notestitle, typeRetrieve all entries. Filter by string or type (note/todo).POST/notesN/ACreate a new entry. Automatically adds timestamps.GET/dashboardN/AGet summary stats (counts, completion rate).2. Individual ResourceMethodEndpointDescriptionGET/notes/:idRetrieve a specific note by its unique ID.PATCH/notes/:idUpdate the title or content of an entry.PATCH/notes/:id/toggleToggle the completed status (To-dos only).DELETE/notes/:idPermanently remove an entry from the database.🧪 Testing Guide (QA Protocol)To verify the integrity of the application, follow these test cases in Thunder Client or Postman:Case A: Persistence TestAction: Create a note via POST.Action: Restart the server in your terminal.Action: Fetch all notes via GET.Expected: The note must still exist, proving fs.writeFileSync functioned correctly.Case B: Schedule Logic TestAction: Send a PATCH to /notes/:id/toggle.Expected: The completed boolean should flip.Action: Check /dashboard.Expected: The completionRate and pending counts should update immediately.Case C: Validation TestAction: Send a POST request with an empty title.Expected: Server returns 400 Bad Request.Action: Request a non-existent ID.Expected: Server returns 404 Not Found.📁 Project Structureindex.js: Primary server logic, routes, and middleware.data.json: The "Database" file (Local JSON storage).middleware/: (If applicable) Custom validation logic like validateId..env: Environment configuration (Port settings).
+A simple RESTful note taking API for creating, reading, updating, and deleting notes.  
+Built with **Node.js** and **Express.js**.
+
+## 📌 Features
+- Create a new note
+- Retrieve all notes
+- Retrieve a single note by ID
+- Update an existing note
+- Delete a note
+- JSON-based API responses
+- Error handling for invalid requests
+
+
+## Tech Stack
+- Node.js
+- Express.js
+- JavaScript
+- Postman (for API testing)
+
+## Installation
+1. Install dependencies
+2. Create a `.env` file
+3. Start the server
+
+## 📂 Project Structure
+- note-taking-api/
+- │
+- ├── routes/
+- │ └── notes.js
+- ├── data/
+- │ └── notes.json
+- ├── app.js
+- ├── package.json
+- ├── .env
+- └── README.md
+
+## Setup
+```bash
+
+
+├── package.json
+├── .env
+└── README.md
