@@ -1,3 +1,4 @@
+const notes = [];
 require("dotenv").config();
 //create and read routes  - Audrey
 const express = require('express');
@@ -10,6 +11,7 @@ app.use(express.json());
 
 //Import your routes
 const notesRoutes = require('./routes/notes.routes');
+const { start } = require("repl");
 
 //Tell Express to use the routes
 app.use('/notes', notesRoutes);
@@ -18,7 +20,6 @@ app.get('/', function (req, res) {
     res.send('Note-taking API is running');
 });
 //creating an array to store notes
-let notes = [];
 console.log(notes)
 let currentId = 1;
 app.post('/notes', (req, res) => {
@@ -28,14 +29,15 @@ app.post('/notes', (req, res) => {
     if (!title || !content) {
         return res.status(400).json({ error: 'Title and content required.' });
     }
-    // create new note
-    const newNote = { id: currentId++, title, content };
+    // Assign a unique ID to each note
+  const id = notes.length + 1;
+  // create new note
+  const newNote = { id, title, content, completed: false };
     notes.push(newNote);
     res.status(201).json({
         message: 'Note created successfully.',
         note: newNote
     });
-
 });
 //read all notes
 app.get('/notes', (req, res) => {
@@ -74,40 +76,36 @@ app.put("/notes/:id", (req, res) => {
 });
 
 // update existing note
-app.patch('/notes/:id', (req, res) => {
-    const noteId = parseInt(req.params.id);
-    const updates = req.body;
-
-    const note = notes.find(n => n.id === noteId);
-
-    if (!note) {
-        return res.status(404).json({ error: "Note not found" });
-    }
-
-    Object.assign(note, updates);
-
-    res.status(200).json({
-        message: "Note patched successfully!",
-        note
-    });
+app.patch("/notes/:id", (req, res) => {
+  const id = Number(req.params.id);       // convert string to number
+  const update = req.body;                // new data
+  const note = notes.find(n => n.id === id);  // find the note
+  if (!note) {
+    return res.status(404).json({ error: "Note not found" });
+  }
+  Object.assign(note, update);            // update the note
+  res.status(200).json({ 
+    message: "Note patched successfully", 
+    note 
+  });
 });
 
+
 //delete existing note
-app.delete('/notes/:id', (req, res) => {
-    const noteId = parseInt(req.params.id);
+app.delete("/notes/:id", (req, res) => {
+  const id = Number(req.params.id);           // convert string to number
+  const index = notes.findIndex(n => n.id === id);
 
-    const noteExists = notes.some(n => n.id === noteId);
+  if (index === -1) {
+    return res.status(404).json({ message: "Note not found" });
+  }
 
-    if (!noteExists) {
-        return res.status(404).json({ error: "Note not found." });
-    }
+  notes.splice(index, 1);
 
-    notes = notes.filter(n => n.id !== noteId);
-
-    res.status(200).json({
-        message: `Note ${noteId} has been deleted.`,
-        remainingNotes: notes
-    });
+  res.status(200).json({
+    message: "Note deleted successfully",
+    notes
+  });
 });
 
 //starting the server
