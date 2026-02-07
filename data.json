@@ -1,0 +1,85 @@
+[
+  {
+    "id": 1770315482443,
+    "title": "Brainstorm",
+    "content": "Idea session",
+    "type": "note",
+    "date": "2026-02-05T18:18:02.443Z"
+  },
+  {
+    "id": 1770315522593,
+    "title": "Moday",
+    "content": "Shopping",
+    "type": "todo",
+    "date": "2026-02-05T18:18:42.593Z",
+    "completed": false
+  },
+  {
+    "id": 1770315611891,
+    "title": "Brainstorm",
+    "content": "Idea session",
+    "type": "note",
+    "date": "2026-02-05T18:20:11.891Z"
+  },
+  {
+    "id": 1770315621055,
+    "title": "Brainstorm",
+    "content": "Idea session",
+    "type": "note",
+    "date": "2026-02-05T18:20:21.055Z"
+  },
+  {
+    "id": 1770315630487,
+    "title": "Brainstorm",
+    "content": "Idea session",
+    "type": "note",
+    "date": "2026-02-05T18:20:30.487Z"
+  },
+  {
+    "id": 1770315715894,
+    "title": "Brainstorm",
+    "content": "Idea session",
+    "type": "note",
+    "date": "2026-02-05T18:21:55.894Z"
+  },
+  {
+    "id": 1770315979812,
+    "title": "Brainstorm",
+    "content": "Idea session",
+    "type": "note",
+    "date": "2026-02-05T18:26:19.812Z"
+  },
+  {
+    "id": 1770315986791,
+    "title": "Brainstorm",
+    "content": "Idea session",
+    "type": "note",
+    "date": "2026-02-05T18:26:26.791Z"
+  },
+  {
+    "id": 1770437781526,
+    "title": "Buy Groceries",
+    "content": "Milk, Eggs, and Bread",
+    "type": "todo",
+    "date": "2026-02-07T04:16:21.526Z",
+    "updatedAt": "2026-02-07T04:16:21.528Z",
+    "completed": false
+  },
+  {
+    "id": 1770439452792,
+    "title": "Learn Express Modules",
+    "content": "Finish the modular routing tutorial",
+    "type": "todo",
+    "date": "2026-02-07T04:44:12.792Z",
+    "updatedAt": null,
+    "completed": false
+  },
+  {
+    "id": 1770439499063,
+    "title": "Learn Express Modules",
+    "content": "Become better",
+    "type": "  ",
+    "date": "2026-02-07T04:44:59.063Z",
+    "updatedAt": "2026-02-07T04:46:53.050Z"
+  }
+]
