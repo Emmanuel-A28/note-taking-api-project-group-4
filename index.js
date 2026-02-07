@@ -19,30 +19,45 @@ let notes = [
 
 let nextId = 2; 
 
-// --- MIDDLEWARE ---
+// --- VALIDATION HELPERS ---
 
+/**
+ * Validates that the input is a non-empty string
+ */
+function isNonEmptyString(val) {
+    return typeof val === 'string' && val.trim().length > 0;
+}
+
+/**
+ * Middleware to check if the ID in the URL is a valid number
+ */
 function validateId(req, res, next) {
     const noteId = parseInt(req.params.id);
     if (isNaN(noteId) || noteId <= 0) {
-        return res.status(400).json({ error: 'Invalid note ID.' });
+        return res.status(400).json({ error: 'Invalid note ID. It must be a positive number.' });
     }
     next();
 }
 
 // --- ROUTES ---
 
-// 1. CREATE with Timestamps
+// 1. CREATE with Strict Validation
 app.post('/notes', (req, res) => {
     const { title, content } = req.body;
 
-    if (!title || !content) {
-        return res.status(400).json({ error: 'Title and content are required.' });
+    // Validation Check
+    const errors = [];
+    if (!isNonEmptyString(title)) errors.push("Title is required and must be a string.");
+    if (!isNonEmptyString(content)) errors.push("Content is required and must be a string.");
+
+    if (errors.length > 0) {
+        return res.status(400).json({ success: false, errors });
     }
 
     const newNote = { 
         id: nextId++, 
-        title, 
-        content,
+        title: title.trim(), 
+        content: content.trim(),
         createdAt: new Date().toLocaleString(),
         updatedAt: null 
     };
@@ -51,19 +66,17 @@ app.post('/notes', (req, res) => {
     res.status(201).json({ message: 'Note created successfully.', note: newNote });
 });
 
-// 2. READ ALL with Search & Sorting
+// 2. READ ALL (unchanged)
 app.get('/notes', (req, res) => {
     const { search } = req.query;
     let filteredNotes = [...notes];
 
-    // Search Logic
     if (search) {
         filteredNotes = notes.filter(n => 
             n.title.toLowerCase().includes(search.toLowerCase())
         );
     }
 
-    // Sort Logic (Newest/Most recently updated at the top)
     filteredNotes.sort((a, b) => {
         const dateA = new Date(a.updatedAt || a.createdAt);
         const dateB = new Date(b.updatedAt || b.createdAt);
@@ -73,7 +86,7 @@ app.get('/notes', (req, res) => {
     res.status(200).json(filteredNotes);
 });
 
-// 3. READ ONE
+// 3. READ ONE (unchanged)
 app.get('/notes/:id', validateId, (req, res) => {
     const noteId = parseInt(req.params.id);
     const note = notes.find(n => n.id === noteId);
@@ -82,23 +95,33 @@ app.get('/notes/:id', validateId, (req, res) => {
     res.status(200).json(note);
 });
 
-// 4. UPDATE with ID Protection & Timestamp
+// 4. UPDATE with Field Validation
 app.patch('/notes/:id', validateId, (req, res) => {
     const id = parseInt(req.params.id);
     const note = notes.find(n => n.id === id);
 
     if (!note) return res.status(404).json({ error: "Note not found" });
 
-    // Destructure to prevent overwriting id or createdAt
-    const { id: _, createdAt: __, ...updates } = req.body; 
+    const { title, content } = req.body;
+
+    // Validation for optional fields
+    if (title !== undefined && !isNonEmptyString(title)) {
+        return res.status(400).json({ error: "Updated title cannot be empty." });
+    }
+    if (content !== undefined && !isNonEmptyString(content)) {
+        return res.status(400).json({ error: "Updated content cannot be empty." });
+    }
+
+    // Clean data and update
+    if (title) note.title = title.trim();
+    if (content) note.content = content.trim();
     
-    Object.assign(note, updates);
     note.updatedAt = new Date().toLocaleString(); 
 
     res.json({ message: "Note updated successfully!", note });
 });
 
-// 5. DELETE
+// 5. DELETE (unchanged)
 app.delete('/notes/:id', validateId, (req, res) => {
     const noteId = parseInt(req.params.id);
     const noteExists = notes.some(n => n.id === noteId);
@@ -109,7 +132,6 @@ app.delete('/notes/:id', validateId, (req, res) => {
     res.status(200).json({ message: `Note ${noteId} deleted.` });
 });
 
-// --- START SERVER ---
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`🚀 Validated Server running on http://localhost:${PORT}`);
 });
